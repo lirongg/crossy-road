@@ -1,0 +1,55 @@
+body {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  gap: 0px;
+  background-color: #222;
+}
+
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(12, 50px); /* Adjust the number of columns as needed */
+  gap: 0px;
+}
+
+#score {
+  color: #fff;
+  font-size: 24px;
+  position: absolute;
+  right: 0;
+}
+
+#level {
+  color: pink;
+  font-size: 24px;
+  left: 0;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  background-color: #ccc;
+  border: 1px solid #fff;
+}
+
+#player {
+  width: 50px;
+  height: 50px;
+  background-color: #00f; /* Blue color for the player square */
+  position: absolute;
+  top: 0; /* Adjusted based on grid dimensions and cell size */
+  left: 0; /* Adjusted based on grid dimensions and cell size */
+  transition: top 0.2s ease, left 0.2s ease; /* Add a smooth transition effect */
+}
+
+.car {
+  width: 50px;
+  height: 50px;
+  background-color: #f00; /* Red color for the car */
+  position: absolute;
+  top: 0; /* Adjusted based on grid dimensions and cell size */
+  left: 0; /* Adjusted based on grid dimensions and cell size */
+  transition: top 0.2s ease, left 0.2s ease; /* Add a smooth transition effect */
+}
