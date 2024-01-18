@@ -1,11 +1,20 @@
 body {
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   height: 100vh;
   margin: 0;
   gap: 0px;
   background-color: #222;
+}
+
+h1 {
+  color: #fff;
+  text-align: center;
+  font-size: 36px;
+  margin-top: 20px;
+
 }
 
 #game-board {
@@ -39,8 +48,9 @@ body {
   height: 50px;
   background-color: #00f; /* Blue color for the player square */
   position: absolute;
-  top: 0; /* Adjusted based on grid dimensions and cell size */
-  left: 0; /* Adjusted based on grid dimensions and cell size */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust to center precisely */
   transition: top 0.2s ease, left 0.2s ease; /* Add a smooth transition effect */
 }
 
@@ -49,7 +59,7 @@ body {
   height: 50px;
   background-color: #f00; /* Red color for the car */
   position: absolute;
-  top: 0; /* Adjusted based on grid dimensions and cell size */
-  left: 0; /* Adjusted based on grid dimensions and cell size */
-  transition: top 0.2s ease, left 0.2s ease; /* Add a smooth transition effect */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust to center precisely */
 }

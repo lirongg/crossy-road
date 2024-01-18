@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }}
 
     // Player's initial position
-    let playerPosition = {row:13, col: 9};
+    let playerPosition = {row:0, col: 5};
     updatePlayerPosition();
 
     // Handle player movement
@@ -57,10 +57,15 @@ document.addEventListener('DOMContentLoaded', function () {
             case 'up':
                 if (playerPosition.row > 0) {
                     playerPosition.row--;
+                    increaseScore(); // Increase the score when moving up
+                    if (playerPosition.row === 0) {
+                        increaseLevel(); // Increase level when reaching row 0
+                        resetPlayerPosition(); // Reset player position to initial state
+                    }
                 }
                 break;
             case 'right':
-                if (playerPosition.col < 17) {
+                if (playerPosition.col < 12) {
                     playerPosition.col++;
                 }
                 break;
@@ -71,7 +76,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 break;
         }
         updatePlayerPosition();
-        increaseScore();
+    }
+
+    function increaseLevel() {
+        level++;
+        levelElement.textContent = `Level: ${level}`;
+    }
+
+    function resetPlayerPosition() {
+        // Set player back to the initial position
+        playerPosition = { row: 0, col: 5 };
+        updatePlayerPosition();
     }
 
     function updatePlayerPosition() {
@@ -79,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         player.style.top = `${playerPosition.row * 50}px`;  // Adjusted for border and gap
     }
 
-    function updateScore() {
+    function increaseScore() {
         score++; 
         scoreElement.textContent = `Score: ${score}`;
     }
@@ -149,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function gameOver() {
         alert('Game Over!');
          // Reset player position to initial state
-         playerPosition = { row: 13, col: 9 };
+         playerPosition = { row: 0, col: 5 };
          updatePlayerPosition();
          // Reset the score
          score = 0;
