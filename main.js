@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
+        // Adjust the grid size as needed
+        const numRows = 12;
+        const numCols = 12;
+
+    
     const gameBoard = document.getElementById('game-board');
     const player = document.createElement('div');
     player.id = 'player';
@@ -10,9 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const levelElement = document.getElementById('level');
     let level = 1;
 
-    // Adjust the grid size as needed
-    const numRows = 12;
-    const numCols = 12;
+
 
     // Create the game board grid
     for (let i = 0; i < numRows; i++) {
@@ -25,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }}
 
     // Player's initial position
-    let playerPosition = {row:11, col: 6};
+    let playerPosition = {row:12, col: 6};
     updatePlayerPosition();
 
     // Handle player movement
@@ -85,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function resetPlayerPosition() {
         // Set player back to the initial position
-        playerPosition = { row: 11, col: 6 };
+        playerPosition = { row: 12, col: 6 };
         updatePlayerPosition();
     }
 
@@ -98,7 +101,8 @@ document.addEventListener('DOMContentLoaded', function () {
         score++; 
         scoreElement.textContent = `Score: ${score}`;
     }
-    
+
+
     // Define the number of cars 
     const cars = [];
     const numCars = 3;
@@ -106,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Define the gap variable
     const gap = 2; // You can adjust the value as needed
     const carsRow10 = [];
+
 
     // Create cars and set initial positions
         for (let i = 0; i < numCars; i++) {
@@ -161,8 +166,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateCarPosition(car);
     }
 }
-    
-
         function moveCarsRow6(cars) {
             for (let i = 0; i < numCars; i++) {
                 const car = cars[i];
@@ -224,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function gameOver() {
         alert('Game Over!');
          // Reset player position to initial state
-         playerPosition = { row: 11, col: 6 };
+         playerPosition = { row: 12, col: 6 };
          updatePlayerPosition();
          // Reset the score
          score = 0;
