@@ -10,6 +10,58 @@ function restartGame() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    drawRoad();
+
+    function drawRoad() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#414648';
+        ctx.fillRect(0,0, canvas.width, canvas.height);
+                
+        // Draw solid white lines on the top and bottom of rows 1 to 4
+        ctx.strokeStyle = '#d39c45';
+        ctx.lineWidth = 1;
+        
+        for (let row = 1; row <= 4; row++) {
+            const y = row * 50; // center of each row
+            const halfLineWidth = ctx.lineWidth / 2;
+            // Draw line on top of row
+            ctx.beginPath();
+            ctx.moveTo(0, y - halfLineWidth);
+            ctx.lineTo(canvas.width, y - halfLineWidth);
+            ctx.stroke();
+            // Draw line on bottom of row
+            ctx.beginPath();
+            ctx.moveTo(0, y + halfLineWidth);
+            ctx.lineTo(canvas.width, y + halfLineWidth);
+            ctx.stroke();
+        }
+        
+
+        // Draw dotted lines in the center of rows 1 to 4
+        ctx.setLineDash([5, 10]);
+        ctx.lineDashOffset = 0;
+
+        for (let row = 1; row <=4; row++) {
+            const y = row * 50 +25; // center of each row
+            ctx.beginPath();
+            ctx.moveTo(0,y);
+            ctx.lineTo(canvas.width,y);
+            ctx.stroke();
+        }
+        
+    }
+    
+    // Fill first row with solid land color
+    ctx.fillStyle = '#4d6f39'; // Adjust the color as needed
+    ctx.fillRect(0, 0, canvas.width, 50); // Assuming each row is 50 pixels high
+
+    // Fill last row with solid land color
+    ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+
+    
     const player = {
         positionX: 6,
         positionY: 6,
@@ -17,12 +69,12 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     const cars = [
-        { positionX: 12, positionY: 5, element: null },
-        { positionX: 12, positionY: 5, element: null },
-        { positionX: 12, positionY: 5, element: null },
-        { positionX: 12, positionY: 3, element: null },
-        { positionX: 12, positionY: 3, element: null },
-        { positionX: 12, positionY: 3, element: null }
+        { positionX: 11, positionY: 5, element: null },
+        { positionX: 11, positionY: 5, element: null },
+        { positionX: 11, positionY: 5, element: null },
+        { positionX: 11, positionY: 3, element: null },
+        { positionX: 11, positionY: 3, element: null },
+        { positionX: 11, positionY: 3, element: null }
     ];
 
     const carsRow2 = [
@@ -70,7 +122,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     function createPlayer() {
-        player.element = document.createElement('div');
+        player.element = document.createElement('img');
+        player.element.src = 'bear.png';
+        player.element.alt = 'Player'
         player.element.className = 'cell player';
         movePlayer();
         gameboard.appendChild(player.element);
@@ -79,9 +133,54 @@ document.addEventListener('DOMContentLoaded', function() {
     function createCar(car) {
         car.element = document.createElement('div');
         car.element.className = 'cell car';
+        car.element.style.width = '50px';
+        car.element.style.height ='50px';
+        
+        // Draw the car shape
+        const canvas = document.createElement('canvas');
+        canvas.width = 50;
+        canvas.height = 50;
+        const ctx = canvas.getContext('2d');
+
+        //Draw the main body of the car
+        ctx.fillStyle = '#e74c3c';
+        ctx.fillRect(10,10,30,20);
+
+        // Draw the roof
+        ctx.fillStyle = '#e74c3c';
+        ctx.fillRect(5, 10, 40, 5);
+
+        // Draw the shorter boot
+        ctx.fillStyle = '#e74c3c';
+        ctx.fillRect(5, 30, 40, 10);
+
+        // Draw windows
+        ctx.fillStyle = '#3498db';
+        ctx.fillRect(15, 12, 10, 8);
+        ctx.fillRect(25, 12, 10, 8);
+
+        // Draw door
+        ctx.fillStyle = '#3498db';
+        ctx.fillRect(15, 30, 20, 18);
+
+        // Draw wheels
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(15, 45, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(35, 45, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        car.element.appendChild(canvas);
         moveCar(car);
         gameboard.appendChild(car.element);
     }
+
+
+
+
 
     function movePlayer() {
         player.element.style.gridColumn = player.positionX;

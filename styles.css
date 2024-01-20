@@ -6,7 +6,7 @@ body {
   height: 100vh;
   margin: 0;
   gap: 0px;
-  background-color: rgba(255, 85, 0, 0.499);
+  background-color: #b08269;
 }
 
 
@@ -22,8 +22,9 @@ h1 {
   justify-content: space-between;
   margin-top: 10px;
   font-size: 24px;
-  color: whitesmoke;
+  color: #e5e1db;
 }
+
 
 #gameboard {
   display: grid;
@@ -31,26 +32,29 @@ h1 {
   grid-template-rows: repeat(6, 50px); /* Each row is 50px */
   gap: 0px;
   border: 2px solid #000;
-  max-width: 604px;
+  max-width: 608px;
   width: 100%;
   aspect-ratio: 2/1; /* Adjust the aspect ratio as needed */
   overflow: hidden;
 }
 
+canvas{
+  position: absolute;
+  object-fit: contain;
+}
+
 .cell {
   width: 50px;
   height: 50px;
-  border: 1px solid rgb(212, 6, 75);
-  background-color: #eee;
 }
 
 .player {
-  background-color: #3498db; /* Blue color for the player */
+  width: 50px;
+  height: 50px;
+  z-index: 2;
+  filter: hue-rotate(-50deg);
 }
 
-.car {
-  background-color: #e74c3c; /* Red color for the car */
-}
 @media (max-width: 600px) {
   #gameboard {
     max-width: 100%;
