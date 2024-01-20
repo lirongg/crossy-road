@@ -11,11 +11,22 @@
 </head>
 <body>
   <h1>Crossy Road</h1>
-  <div class = "container">
-  <div id = "score">Score : 0</div> 
-  <div id = "level">Level : 1</div>
-  <div id="game-board"></div>
-  <canvas id="gameCanvas" width="600" height="381.5"></canvas>
+  <div id="game-container">
+  <div id="info">
+    <div>Level: <span id="level">1</span></div>
+    <div>Score: <span id="score">0</span></div>
+</div>
+
+<div id="gameboard"></div>
+
+<!-- Game Over Screen -->
+<div id="gameOverScreen">
+  <div id="gameOverContent">
+    <p>Game Over!</p>
+    <p>Your Score: <span id = "gameOverScore">0</span></p>
+    <button id="restartButton" onclick="restartGame()">Restart Game</button>
+  </div>
+</div>
   </div>
 </body>
 </html>
