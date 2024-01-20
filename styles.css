@@ -20,6 +20,7 @@ h1 {
 #game-board {
   display: grid;
   grid-template-columns: repeat(12, 50px);
+  grid-template-rows: repeat(6, 50px);
   gap: 0px;
   position: relative; /* ensure that child elements are positioned relative to it */
   align-self: flex-start; 
@@ -30,7 +31,7 @@ h1 {
   font-size: 24px;
   position: absolute;
   top:85px;
-  right: 670px;
+  right: 420px;
 }
 
 #level {
@@ -42,30 +43,41 @@ h1 {
 .cell {
   width: 50px;
   height: 50px;
-  background-color: #ccc;
-  border: 1px solid #fff;
+  background-color: green; /* Add this line with the correct path to your image */
+  background-size:80px 180px ; /* Adjust the size of the background image */
+  background-position: center;
+  background-repeat: repeat;
+}
+
+.cell:not([data-row="5"]):not([data-row="0"]) {
+  background-image: url('img/road.png'); /* Add this line with the correct path to your image */
 }
 
 #player {
   width: 50px;
   height: 50px;
-  background-color: #00f;
-  border: 1px solid pink;
   position: absolute;
   top: 50%; /* Center vertically */
   left: 50%; /* Center horizontally */
   transform: translate(-50%, -50%); /* Adjust to center precisely */
   transition: top 0.2s ease, left 0.2s ease; /* Add a smooth transition effect */
+  background-image: url('img/man.png'); /* Add this line with the correct path to your image */
+  background-size:50% ; /* Adjust the size of the background image */
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .car {
   width: 50px;
   height: 50px;
-  background-color: red;
   position: absolute; /* Added this line to use absolute positioning for cars */
   top: 50%; /* Center vertically */
   left: 50%; /* Center horizontally */
   transform: translate(-50%, -50%); /* Adjust to center precisely */
   transition: top 0.1s ease, left 0.1s ease; /* Add a smooth transition effect */
+  background-image: url('img/car.png'); /* Add this line with the correct path to your image */
+  background-size:100% ; /* Adjust the size of the background image */
+  background-position: center;
+  background-repeat: no-repeat;
 }
 

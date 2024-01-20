@@ -1,21 +1,55 @@
 document.addEventListener('DOMContentLoaded', function () {
-        // Adjust the grid size as needed
-        const numRows = 12;
-        const numCols = 12;
+    // Determine the grid size
+    const numRows = 6;
+    const numCols = 12;
 
-    
+    const canvas = document.getElementById('gameCanvas');
+    const context = canvas.getContext('2d');
+
+
+    // Create a container element    
     const gameBoard = document.getElementById('game-board');
+
+    // Create a container element
+    const container = document.createElement('div');
+
+
+    // Create player element
     const player = document.createElement('div');
     player.id = 'player';
-    gameBoard.appendChild(player);
+
+    // Create car element
+    const car = document.createElement('div');
+    car.id = 'car';
+
+    // Append player and car to the container
+    container.appendChild(player);
+    container.appendChild(car);
+
+    // Append the container to the gameBoard
+    gameBoard.appendChild(container);
+    // const player = document.createElement('div');
+    // player.id = 'player';
+    // gameBoard.appendChild(player);
+
+    // const car = document.createElement('div');
+    // car.id = 'car';
+    // gameBoard.appendChild(car);
 
     const scoreElement = document.getElementById('score');
     let score = 0;
 
     const levelElement = document.getElementById('level');
     let level = 1;
+    // Function to update the displayed score
+    function updateScore() {
+        scoreElement.textContent = `Score: ${score}`;
+    }
 
-
+    // Function to update the displayed level
+    function updateLevel() {
+        levelElement.textContent = `Level: ${level}`;
+    }
 
     // Create the game board grid
     for (let i = 0; i < numRows; i++) {
@@ -25,15 +59,26 @@ document.addEventListener('DOMContentLoaded', function () {
             cell.setAttribute('data-row', i);
             cell.setAttribute('data-col', j);
             gameBoard.appendChild(cell);
-        }}
+        }
+    }
+
+    function increaseScore() {
+        score++; 
+        scoreElement.textContent = `Score: ${score}`;
+    }
+
+    function increaseLevel() {
+        level++;
+        levelElement.textContent = `Level: ${level}`;
+    }
 
     // Player's initial position
-    let playerPosition = {row:12, col: 6};
+    let playerPosition = {row:6, col: 6};
     updatePlayerPosition();
-
+    
     // Handle player movement
     document.addEventListener('keydown', function (e) {
-        // Arrow keys: Left (37), Up (38), Right (39), Down (40)
+        // Arrow keys: Left (37), Up (38), Right (39)
         switch (e.keyCode) {
             case 37:
                 movePlayer('left');
@@ -44,12 +89,9 @@ document.addEventListener('DOMContentLoaded', function () {
             case 39:
                 movePlayer('right');
                 break;
-            case 40:
-                movePlayer('down');
-                break;
-        }
-    });
-
+            }
+        });
+        
     function movePlayer(direction) {
         switch (direction) {
             case 'left':
@@ -72,23 +114,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     playerPosition.col++;
                 }
                 break;
-            case 'down':
-                if (playerPosition.row < 12) {
-                    playerPosition.row++;
-                }
-                break;
         }
         updatePlayerPosition();
     }
 
-    function increaseLevel() {
-        level++;
-        levelElement.textContent = `Level: ${level}`;
-    }
-
     function resetPlayerPosition() {
         // Set player back to the initial position
-        playerPosition = { row: 12, col: 6 };
+        playerPosition = { row: 6, col: 6 };
         updatePlayerPosition();
     }
 
@@ -97,148 +129,139 @@ document.addEventListener('DOMContentLoaded', function () {
         player.style.top = `${playerPosition.row * 50}px`;  // Adjusted for border and gap
     }
 
-    function increaseScore() {
-        score++; 
-        scoreElement.textContent = `Score: ${score}`;
-    }
-
-
     // Define the number of cars 
-    const cars = [];
+    const carsRow8 = [];
     const numCars = 3;
     const carsRow6 = [];
-    // Define the gap variable
-    const gap = 2; // You can adjust the value as needed
     const carsRow10 = [];
 
-
-    // Create cars and set initial positions
-        for (let i = 0; i < numCars; i++) {
-            const car = document.createElement('div');
-            car.classList.add('car');
-            gameBoard.appendChild(car);
-            cars.push({ element: car, position: { row: 8, col: i * 3 } });
-            updateCarPosition(cars[i]);
-        }
-
+    // Define the gap variable
+    const gap = 2; // Gap between the cars
+        
     // Create cars on row 6 and set initial positions
     
+    for (let i = 0; i < numCars; i++) {
+        const car = document.createElement('div');
+        car.classList.add('car');
+        gameBoard.appendChild(car);
+        carsRow6.push({ element: car, position: { row: 2, col: i * 3} });
+        updateCarPosition(carsRow6[i]);
+    }
+ 
+    // Create cars on row 8 and set initial positions
+    for (let i = 0; i < numCars; i++) {
+        const car = document.createElement('div');
+        car.classList.add('car');
+        gameBoard.appendChild(car);
+        carsRow8.push({ element: car, position: { row: 3, col: i * 3 } });
+        updateCarPosition(carsRow8[i]);
+    }
+
+    // Create cars on row 10 and set initial positions
+    for (let i = 0; i < numCars; i++) {
+        const car = document.createElement('div');
+        car.classList.add('car');
+        gameBoard.appendChild(car);
+        carsRow10.push({ element: car, position: { row: 4, col: i * 3} });
+        updateCarPosition(carsRow10[i]);
+    }
+
+    setInterval(function () {
+        moveCarsRow6(carsRow6);
+        moveCarsRow8(carsRow8);
+        moveCarsRow10(carsRow10);
+        checkCollision(); // Check collision after moving cars
+    }, 500); //move every 5s
+
+    function moveCarsRow6(cars) {
         for (let i = 0; i < numCars; i++) {
-            const car = document.createElement('div');
-            car.classList.add('car');
-            gameBoard.appendChild(car);
-            carsRow6.push({ element: car, position: { row: 6, col: i * 3} });
-            updateCarPosition(carsRow6[i]);
-        }
+            const car = cars[i];
+            // Move the car to the left
+            car.position.col--;
+            // Check if the car has reached the leftmost part of the board
+             if (car.position.col < 0) {
+             // If so, set a random column position within the rightmost part of the board
+             car.position.col = numCols - gap;
+            }   
+        // Update the car's position on the game board
+        updateCarPosition(car);
+    }
+}
 
-         // Create cars on row 10 and set initial positions
-    
-         for (let i = 0; i < numCars; i++) {
-            const car = document.createElement('div');
-            car.classList.add('car');
-            gameBoard.appendChild(car);
-            carsRow10.push({ element: car, position: { row: 10, col: i * 3} });
-            updateCarPosition(carsRow10[i]);
-        }
-
-        setInterval(function () {
-            moveCars(cars);
-            moveCarsRow6(carsRow6);
-            moveCarsRow10(carsRow10);
-            checkCollision(); // Check collision after moving cars
-        }, 500); //move every 5s
-
-
-
-        function moveCars() {
-            for (let i = 0; i < numCars; i++) {
-                const car = cars[i];
-        // Move the car to the right
-        car.position.col++;
-
-        // Check if the car has reached the rightmost part of the board
-        if (car.position.col >= numCols - gap) {
+    function moveCarsRow8(cars) {
+        for (let i = 0; i < numCars; i++) {
+            const car = cars[i];
+            // Move the car to the right
+            car.position.col++;
+            // Check if the car has reached the rightmost part of the board
+            if (car.position.col >= numCols - gap) {
             // If so, wrap around to the leftmost part of the board
             car.position.col = 0;
         }
+        // Update the car's position on the game board
+        updateCarPosition(car);
+    }
+}
+
+    function moveCarsRow10(cars) {
+        for (let i = 0; i < numCars; i++) {
+            const car = cars[i];
+            // Move the car to the left
+            car.position.col--;
+            // Check if the car has reached the leftmost part of the board
+            if (car.position.col < 0) {
+            // If so, set a random column position within the rightmost part of the board
+            car.position.col = numCols - gap;
+            }   
 
         // Update the car's position on the game board
         updateCarPosition(car);
     }
 }
-        function moveCarsRow6(cars) {
-            for (let i = 0; i < numCars; i++) {
-                const car = cars[i];
-            // Move the car to the left
-            car.position.col--;
 
-            // Check if the car has reached the leftmost part of the board
-             if (car.position.col < 0) {
-             // If so, set a random column position within the rightmost part of the board
-             car.position.col = numCols - gap;
-             }   
-
-        // Update the car's position on the game board
-        updateCarPosition(car);
-    }
+    function updateCarPosition(car) {
+        car.element.style.left = `${car.position.col * 50}px`;
+        car.element.style.top = `${car.position.row * 50}px`;
     }
 
-        function moveCarsRow10(cars) {
-            for (let i = 0; i < numCars; i++) {
-                const car = cars[i];
-                // Move the car to the left
-                car.position.col--;
 
-                // Check if the car has reached the leftmost part of the board
-                 if (car.position.col < 0) {
-                 // If so, set a random column position within the rightmost part of the board
-                 car.position.col = numCols - gap;
-                 }   
-
-            // Update the car's position on the game board
-            updateCarPosition(car);
-        }
+    function checkCollision() {
+        checkCollisionWithCars(carsRow6);
+        checkCollisionWithCars(carsRow8);
+        checkCollisionWithCars(carsRow10);
     }
-
-        function updateCarPosition(car) {
-            car.element.style.left = `${car.position.col * 50}px`;
-            car.element.style.top = `${car.position.row * 50}px`;
-        }
-
-        function checkCollision() {
-            checkCollisionWithCars(cars);
-            checkCollisionWithCars(carsRow6);
-            checkCollisionWithCars(carsRow10);
-        }
         
-        function checkCollisionWithCars(carArray) {
-            for (let i = 0; i < numCars; i++) {
-                const car = carArray[i];
-                if (
-                    playerPosition.row === car.position.row &&
-                    playerPosition.col === car.position.col
-                ) {
-                    gameOver();
-                }
+    function checkCollisionWithCars(carArray) {
+        for (let i = 0; i < numCars; i++) {
+            const car = carArray[i];
+             // Debugging statements
+        console.log("Player:", playerPosition.row, playerPosition.col);
+        console.log("Car:", car.position.row, car.position.col);
+            if (
+                playerPosition.row === car.position.row &&
+                playerPosition.col === car.position.col
+            ) {
+                console.log("Collision detected!");
+                gameOver();
             }
         }
+    }
+
 
 
     function gameOver() {
         alert('Game Over!');
          // Reset player position to initial state
-         playerPosition = { row: 12, col: 6 };
+         playerPosition = { row: 6, col: 6 };
          updatePlayerPosition();
          // Reset the score
          score = 0;
          updateScore();
-        // Add additional game over logic here, such as resetting the game or showing a game over screen
-        // For simplicity, the example uses an alert, but you can customize this function.
-        // You might want to reset the player and car positions, stop the car movement, etc.
+         // Reset the level
+         level = 1;
+         updateLevel();
     }
 
 });
 
-//     // ... (remaining code)
-
-//     // Add additional logic for your game, like player movement, obstacles, etc.
+// End of Code
