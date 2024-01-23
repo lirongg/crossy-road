@@ -41,12 +41,14 @@ h1 {
 canvas{
   position: absolute;
   object-fit: contain;
+  z-index: -1;
 }
 
 .cell {
   width: 50px;
   height: 50px;
 }
+
 
 .player {
   width: 50px;
@@ -55,10 +57,16 @@ canvas{
   filter: hue-rotate(-50deg);
 }
 
-@media (max-width: 600px) {
-  #gameboard {
-    max-width: 100%;
-  }
+#startScreen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 24px;
+  color: white;
+  background-color: grey;
+  display: block;
 }
 
 #gameOverScreen {
