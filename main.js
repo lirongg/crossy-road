@@ -1,12 +1,12 @@
 function restartGame() {
     document.getElementById('gameOverScreen').style.display='none';
-    resetPlayerPosition();
-       //Reset the score
-       score = 0;
-       updateScore();
-       // Reset the level
-       level = 1;
-       updateLevel();
+    // resetPlayerPosition();
+    //    //Reset the score
+    //    score = 0;
+    //    updateScore();
+    //    // Reset the level
+    //    level = 1;
+    //    updateLevel();
 }
 // Listens for the "DOMContentLoaded" event, which fires when the initial HTML document has been completely loaded and parsed.
 document.addEventListener('DOMContentLoaded', function() {
@@ -64,21 +64,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const player = {positionX: 6, positionY: 6, element: null};
 
     const cars = [
+        { positionX: 9, positionY: 5, element: null },
         { positionX: 11, positionY: 5, element: null },
-        { positionX: 11, positionY: 5, element: null },
-        { positionX: 11, positionY: 5, element: null },
-        { positionX: 11, positionY: 3, element: null },
-        { positionX: 11, positionY: 3, element: null },
-        { positionX: 11, positionY: 3, element: null }
+        { positionX: 6, positionY: 5, element: null },
+        { positionX: 1, positionY: 5, element: null },
+        { positionX: 8, positionY: 3, element: null },
+        { positionX: 10, positionY: 3, element: null },
+        { positionX: 3, positionY: 3, element: null },
+        { positionX: 5, positionY: 3, element: null }
     ];
 
     const carsRow2 = [
-        { positionX: 0, positionY: 2, element: null },
-        { positionX: 0, positionY: 2, element: null },
-        { positionX: 0, positionY: 2, element: null },
-        { positionX: 0, positionY: 4, element: null },
-        { positionX: 0, positionY: 4, element: null },
-        { positionX: 0, positionY: 4, element: null },
+        { positionX: 2, positionY: 2, element: null },
+        { positionX: 7, positionY: 2, element: null },
+        { positionX: 9, positionY: 2, element: null },
+        { positionX: 11, positionY: 2, element: null },
+        { positionX: 10, positionY: 4, element: null },
+        { positionX: 12, positionY: 4, element: null },
+        { positionX: 5, positionY: 4, element: null },
+        { positionX: 3, positionY: 4, element: null },
     ];
 
     const gameboard = document.getElementById('gameboard');
@@ -126,47 +130,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function createCar(car) {
-        car.element = document.createElement('div');
+        car.element = document.createElement('img');
+        car.element.src = 'car.png'; // Replace 'car.png' with the actual path to your car image
+        car.element.alt = 'Car';
         car.element.className = 'cell car';
         car.element.style.width = '50px';
-        car.element.style.height ='50px';
+        car.element.style.height = '50px';
         
-        // Draw the car shape
-        const canvas = document.createElement('canvas');
-        canvas.width = 50;
-        canvas.height = 50;
-        const ctx = canvas.getContext('2d');
+        moveCar(car);
+        gameboard.appendChild(car.element);
+    }
 
-        //Draw the main body of the car
-        ctx.fillStyle = '#ba0430';
-        ctx.fillRect(5,10,40,20);
-
-        // Draw the roof
-        ctx.fillStyle = '#ba0430';
-        ctx.fillRect(5, 7, 40, 5);
-
-        // Draw the shorter boot
-        ctx.fillStyle = '#ba0430';
-        ctx.fillRect(5, 30, 40, 10);
-
-        // Draw windows
-        ctx.fillStyle = '#52b2bf';
-        ctx.fillRect(10, 10, 10, 10);
-        ctx.fillRect(30, 10, 10, 10);
-
-        // Draw door
-        ctx.fillStyle = '#cd5c5c';
-        ctx.fillRect(15, 25, 20, 15);
-
-        // Draw wheels
-        ctx.fillStyle = '#000';
-        for (let i = 0; i < 2; i++) {
-        ctx.beginPath();
-        ctx.arc(15 + i * 20, 45, 5, 0, Math.PI * 2);
-        ctx.fill();
-        }
-        
-        car.element.appendChild(canvas);
+    function createMirroredCar(car) {
+        car.element = document.createElement('img');
+        car.element.src = 'car.png'; // Replace 'car.png' with the actual path to your car image
+        car.element.alt = 'Car';
+        car.element.className = 'cell car';
+        car.element.style.width = '50px';
+        car.element.style.height = '50px';
+        car.element.style.transform = 'scaleX(-1)'; // Apply horizontal flip
+    
         moveCar(car);
         gameboard.appendChild(car.element);
     }
@@ -186,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('gameOverScreen').style.display === 'block') {
         return;
     }
+
         switch (event.key) {
             case 'ArrowUp':
                 if (player.positionY > 0) {
@@ -211,7 +195,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 break;
         }
+
+         // Check for collision with cars after updating the player's position
+    for (const car of cars) {
+        if (checkCollision(player, car)) {
+            gameOver(); // Trigger game over if collision detected
+            return; // Stop further processing if collision is detected
+        }
     }
+}
 
     // Function to set player back to the initial position
     function resetPlayerPosition() {
@@ -220,62 +212,75 @@ document.addEventListener('DOMContentLoaded', function() {
         movePlayer();
     }
 
-    function moveCarsAutomatically(cars, direction) {
-        const gapBetweenCars = 4;
-        const baseFrameDelay = 500;
-        const speedIncreaseFactor = 2; // means will double the speed
-    
-        // Calculate the frame delay based on the current level
-        const frameDelay = baseFrameDelay * Math.pow(speedIncreaseFactor, level - 1);
-        // Initiates a loop to move cars automatically in the specified directions.
-        for (let i = 0; i < cars.length; i++) {
-            const car = cars[i];
-    
-            // Introduce a delay based on the index of the car
-            const delay = i * gapBetweenCars;
-    
-            setTimeout(() => {
-                if (direction === 'left') {
-                    car.positionX--;
-                    // If updated position becomes less than or equals to 1, car resets from the most rightmost position
-                    if (car.positionX <= 0) { 
-                        car.positionX = 12;
-                    }
-                } else if (direction === 'right') {
-                    car.positionX++;
-                    // If updated position becomes more than or equals to 12, car resets from the most leftmost position
-                    if (car.positionX >= 12) {
-                        car.positionX = 0;
-                    }
-                }
-    
-                moveCar(car);
-    
-                console.log("Current positionX:", car.positionX);
-    
-                // Check for collision with player
-                if (checkCollision(player, car)) {
-                    gameOver(); // Trigger game over if collision detected
-                }
-            }, delay * frameDelay);
+// Define the base speed and speed multiplier
+let baseSpeed = 1000; // Adjust this value based on your preference
+const speedMultiplier = 0.5; // Adjust this multiplier
+
+function moveCarsRight() {
+    for (let i = 0; i < cars.length; i++) {
+        cars[i].positionX++;
+        if (cars[i].positionX > 12) {
+            cars[i].positionX = 0;
         }
-    
-        // Request the next animation frame
-        setTimeout(() => {
-            requestAnimationFrame(() => moveCarsAutomatically(cars, direction));
-        }, frameDelay);
+        moveCar(cars[i]);
+
+        // Check for collision with player
+        if (checkCollision(player, cars[i])) {
+            gameOver(); // Trigger game over if collision detected
+        }
     }
+}
+
+function moveCarsLeft() {
+    for (let i = 0; i < carsRow2.length; i++) {
+        carsRow2[i].positionX--;
+        if (carsRow2[i].positionX < 0) {
+            carsRow2[i].positionX = 12;
+        }
+        moveCar(carsRow2[i]);
+
+        // Check for collision with player
+        if (checkCollision(player, carsRow2[i])) {
+            gameOver(); // Trigger game over if collision detected
+        }
+    }
+}
+
+// Function to update the displayed level
+function updateLevel() {
+    levelElement.textContent = `${level}`;
+
+    // Adjust the speed based on the level
+    const adjustedSpeed = baseSpeed * Math.pow(speedMultiplier, level - 1);
+
+    // Clear existing intervals and set the new intervals with adjusted speed
+    clearInterval(moveCarsRightInterval);
+    moveCarsRightInterval = setInterval(moveCarsRight, adjustedSpeed);
+
+    clearInterval(moveCarsLeftInterval);
+    moveCarsLeftInterval = setInterval(moveCarsLeft, adjustedSpeed);
+}
+
+// ... (your existing code)
+
+// Set up the initial intervals
+let moveCarsRightInterval = setInterval(moveCarsRight, baseSpeed);
+let moveCarsLeftInterval = setInterval(moveCarsLeft, baseSpeed);
     
 
-    // Function to check for collision between player and car
-    function checkCollision(player, car) {
-        return (
-            player.positionX < car.positionX + 1 &&
-            player.positionX + 1 > car.positionX &&
-            player.positionY < car.positionY + 1 &&
-            player.positionY + 1 > car.positionY
-        );
+// Function to check for collision between player and car
+function checkCollision(player, car) {
+    const collision =
+        player.positionX === car.positionX &&
+        player.positionY === car.positionY;
+
+    if (collision) {
+        console.log('Collision detected!');
+        console.log('Player:', player.positionX, player.positionY);
+        console.log('Car:', car.positionX, car.positionY);
+        gameOver();
     }
+}
 
     document.addEventListener('keydown', handleKeyPress);
 
@@ -283,16 +288,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Creating a loop initializes all cars on the board when the page loads
     for (const car of cars) {
-        createCar(car);
+        createMirroredCar(car);
     }
 
     for (const car of carsRow2) {
         createCar(car);
     }
 
-    // Start moving cars smoothly
-    requestAnimationFrame(() => moveCarsAutomatically(cars, 'left'));
-    requestAnimationFrame(() => moveCarsAutomatically(carsRow2, 'right'));
 
     function gameOver() {
         // Display the game over screen
@@ -316,8 +318,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!gameStarted) {
         gameStarted = true;
         document.getElementById('startScreen').style.display = 'none'; // Hide the start screen
-        requestAnimationFrame(() => moveCarsAutomatically(cars, 'left')); // Start moving cars
-        requestAnimationFrame(() => moveCarsAutomatically(carsRow2, 'right'));
         }
     }
 
