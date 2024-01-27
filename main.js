@@ -8,7 +8,7 @@ function restartGame() {
        level = 1;
        updateLevel();
 }
-
+// Listens for the "DOMContentLoaded" event, which fires when the initial HTML document has been completely loaded and parsed.
 document.addEventListener('DOMContentLoaded', function() {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -55,13 +55,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Fill first row with solid land color
-    ctx.fillStyle = '#4d6f39'; // Adjust the color as needed
+    ctx.fillStyle = '#3f704d'; // Adjust the color as needed
     ctx.fillRect(0, 0, canvas.width, 50); // Assuming each row is 50 pixels high
 
     // Fill last row with solid land color
     ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
 
-    
     const player = {positionX: 6, positionY: 6, element: null};
 
     const cars = [
@@ -139,48 +138,42 @@ document.addEventListener('DOMContentLoaded', function() {
         const ctx = canvas.getContext('2d');
 
         //Draw the main body of the car
-        ctx.fillStyle = '#e74c3c';
+        ctx.fillStyle = '#ba0430';
         ctx.fillRect(5,10,40,20);
 
         // Draw the roof
-        ctx.fillStyle = '#e74c3c';
+        ctx.fillStyle = '#ba0430';
         ctx.fillRect(5, 7, 40, 5);
 
         // Draw the shorter boot
-        ctx.fillStyle = '#e74c3c';
+        ctx.fillStyle = '#ba0430';
         ctx.fillRect(5, 30, 40, 10);
 
         // Draw windows
-        ctx.fillStyle = '#3498db';
+        ctx.fillStyle = '#52b2bf';
         ctx.fillRect(10, 10, 10, 10);
         ctx.fillRect(30, 10, 10, 10);
 
         // Draw door
-        ctx.fillStyle = '#3498db';
+        ctx.fillStyle = '#cd5c5c';
         ctx.fillRect(15, 25, 20, 15);
 
         // Draw wheels
         ctx.fillStyle = '#000';
+        for (let i = 0; i < 2; i++) {
         ctx.beginPath();
-        ctx.arc(15, 45, 5, 0, Math.PI * 2);
+        ctx.arc(15 + i * 20, 45, 5, 0, Math.PI * 2);
         ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(35, 45, 5, 0, Math.PI * 2);
-        ctx.fill();
-
+        }
+        
         car.element.appendChild(canvas);
         moveCar(car);
         gameboard.appendChild(car.element);
     }
 
-
-
-
-
     function movePlayer() {
-        player.element.style.gridColumn = player.positionX;
-        player.element.style.gridRow = player.positionY;
+        player.element.style.gridColumn = player.positionX; // Column where player will be located
+        player.element.style.gridRow = player.positionY; // Row where player will be located
     }
 
     function moveCar(car) {
@@ -189,6 +182,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function handleKeyPress(event) {
+        // Check if the game is over
+    if (document.getElementById('gameOverScreen').style.display === 'block') {
+        return;
+    }
         switch (event.key) {
             case 'ArrowUp':
                 if (player.positionY > 0) {
@@ -230,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
         // Calculate the frame delay based on the current level
         const frameDelay = baseFrameDelay * Math.pow(speedIncreaseFactor, level - 1);
-    
+        // Initiates a loop to move cars automatically in the specified directions.
         for (let i = 0; i < cars.length; i++) {
             const car = cars[i];
     
