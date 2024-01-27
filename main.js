@@ -1,12 +1,12 @@
 function restartGame() {
     document.getElementById('gameOverScreen').style.display='none';
-    // resetPlayerPosition();
-    //    //Reset the score
-    //    score = 0;
-    //    updateScore();
-    //    // Reset the level
-    //    level = 1;
-    //    updateLevel();
+    resetPlayerPosition();
+       //Reset the score
+       score = 0;
+       updateScore();
+       // Reset the level
+       level = 1;
+       updateLevel();
 }
 // Listens for the "DOMContentLoaded" event, which fires when the initial HTML document has been completely loaded and parsed.
 document.addEventListener('DOMContentLoaded', function() {
