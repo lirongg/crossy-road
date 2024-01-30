@@ -265,15 +265,13 @@ function updateLevel() {
     moveCarsLeftInterval = setInterval(moveCarsLeft, adjustedSpeed);
 }
 
-// ... (your existing code)
-
-// Set up the initial intervals
-let moveCarsRightInterval = setInterval(moveCarsRight, baseSpeed);
-let moveCarsLeftInterval = setInterval(moveCarsLeft, baseSpeed);
+    // Set up the initial intervals
+    let moveCarsRightInterval = setInterval(moveCarsRight, baseSpeed);
+    let moveCarsLeftInterval = setInterval(moveCarsLeft, baseSpeed);
     
 
-// Function to check for collision between player and car
-function checkCollision(player, car) {
+    // Function to check for collision between player and car
+    function checkCollision(player, car) {
     const collision =
         player.positionX === car.positionX &&
         player.positionY === car.positionY;

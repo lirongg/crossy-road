@@ -101,10 +101,3 @@ canvas{
   font-size: 18px;
   margin-top: 20px;
 }
-
-@media only screen and (max-width:600px) {
-  #gameCanvas {
-    width:100%;
-    height: auto;
-  }
-}
