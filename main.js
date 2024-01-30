@@ -1,3 +1,5 @@
+
+// Function to restart game
 function restartGame() {
     document.getElementById('gameOverScreen').style.display='none';
     resetPlayerPosition();
@@ -38,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.lineTo(canvas.width, y + halfLineWidth);
             ctx.stroke();
         }
-        
 
         // Draw dotted lines in the center of rows 1 to 4
         ctx.setLineDash([5, 10]);
@@ -61,30 +62,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fill last row with solid land color
     ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
 
-    const player = {positionX: 6, positionY: 6, element: null};
+    const player = {positionX: 6, positionY: 6};
 
     const cars = [
-        { positionX: 9, positionY: 5, element: null },
-        { positionX: 11, positionY: 5, element: null },
-        { positionX: 6, positionY: 5, element: null },
-        { positionX: 1, positionY: 5, element: null },
-        { positionX: 8, positionY: 3, element: null },
-        { positionX: 10, positionY: 3, element: null },
-        { positionX: 3, positionY: 3, element: null },
-        { positionX: 5, positionY: 3, element: null }
+        { positionX: 9, positionY: 5 },
+        { positionX: 11, positionY: 5 },
+        { positionX: 6, positionY: 5 },
+        { positionX: 1, positionY: 5 },
+        { positionX: 9, positionY: 3 },
+        { positionX: 3, positionY: 3 },
+        { positionX: 6, positionY: 3 }
     ];
 
     const carsRow2 = [
-        { positionX: 2, positionY: 2, element: null },
-        { positionX: 7, positionY: 2, element: null },
-        { positionX: 9, positionY: 2, element: null },
-        { positionX: 11, positionY: 2, element: null },
-        { positionX: 10, positionY: 4, element: null },
-        { positionX: 12, positionY: 4, element: null },
-        { positionX: 5, positionY: 4, element: null },
-        { positionX: 3, positionY: 4, element: null },
+        { positionX: 2, positionY: 2 },
+        { positionX: 7, positionY: 2 },
+        { positionX: 11, positionY: 2 },
+        { positionX: 9, positionY: 4 },
+        { positionX: 12, positionY: 4 },
+        { positionX: 5, positionY: 4 },
+        { positionX: 3, positionY: 4 },
     ];
 
+
+    // Get references to the gameboard elements
     const gameboard = document.getElementById('gameboard');
 
     // Get references to the score elements
@@ -117,6 +118,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function increaseLevel() {
         level++;
         updateLevel();
+
+        // Add a pop-up message when moving to the next level
+        alert(`Congratulations! You've reached Level ${level}!`);
     }
 
 
@@ -214,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Define the base speed and speed multiplier
 let baseSpeed = 1000; // Adjust this value based on your preference
-const speedMultiplier = 0.5; // Adjust this multiplier
+const speedMultiplier = 0.7; // Adjust this multiplier
 
 function moveCarsRight() {
     for (let i = 0; i < cars.length; i++) {
