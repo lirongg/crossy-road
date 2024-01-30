@@ -10,7 +10,7 @@ CSS
 JavaScript
 
 Deployed Game:
-Play Bear Crossing <--link-->
+Play Bear Crossing https://lirongg.github.io/crossy-road/
 
 
 Instructions:
