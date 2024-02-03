@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 // Define the base speed and speed multiplier
-let baseSpeed = 1000; // Adjust this value based on your preference
+let baseSpeed = 1000; 
 const speedMultiplier = 0.7; // Adjust this multiplier
 
 function moveCarsRight() {
