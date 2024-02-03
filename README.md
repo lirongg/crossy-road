@@ -1,6 +1,6 @@
-Bear Crossing - Arcade Game
 
-Game Title: Bear Crossing
+
+Game Title: Crossy road
 
 Description: Players control a bear navigating a busy road. The goal is to move the bear upwards, avoiding oncoming traffic represented by cars. The game features dynamic car movements, increasing difficulty levels, and a scoring system that rewards players for reaching higher levels. 
 
@@ -10,7 +10,7 @@ CSS
 JavaScript
 
 Deployed Game:
-Play Bear Crossing https://lirongg.github.io/crossy-road/
+Play Crossy road https://lirongg.github.io/crossy-road/
 
 
 Instructions:
