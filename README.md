@@ -12,6 +12,7 @@ JavaScript
 Deployed Game:
 Play Crossy road https://lirongg.github.io/crossy-road/
 
+<img width="204" alt="image" src="https://github.com/lirongg/crossy-road/assets/152973321/28c9dc85-bd21-4aae-8b60-d13b926cd127">
 
 Instructions:
 
